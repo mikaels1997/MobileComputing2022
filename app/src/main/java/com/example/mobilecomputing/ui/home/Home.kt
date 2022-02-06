@@ -38,7 +38,7 @@ private fun HomeAppBar(
         title = {
             Text(
                 text = stringResource(R.string.app_name),
-                color = MaterialTheme.colors.primary,
+                color = Color.Black,
                 modifier = Modifier
                     .padding(start = 4.dp)
                     .heightIn(max = 24.dp)
@@ -49,7 +49,7 @@ private fun HomeAppBar(
             IconButton( onClick = {}){
                 Icon(imageVector = Icons.Filled.Search, contentDescription = "Search")
             }
-            IconButton( onClick = { navController.navigate("login")}){
+            IconButton( onClick = { navController.navigate("profile")}){
                 Icon(imageVector = Icons.Filled.AccountCircle, contentDescription = "Account")
             }
         }
@@ -65,7 +65,7 @@ fun HomeContent(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = { navController.navigate(route = "addreminder") },
-                contentColor = Color.Blue,
+                contentColor = Color.Black,
                 modifier = Modifier.padding(all = 20.dp)
             ) {
                 Icon(

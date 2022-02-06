@@ -50,7 +50,7 @@ fun Login(
             OutlinedTextField(
                 value = username.value,
                 onValueChange = { data -> username.value = data},
-                label = { Text("lol") },
+                label = { Text("Username") },
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text

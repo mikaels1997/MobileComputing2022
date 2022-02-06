@@ -8,6 +8,7 @@ import com.example.mobilecomputing.rememberAppState
 import com.example.mobilecomputing.ui.addreminder.AddReminder
 import com.example.mobilecomputing.ui.home.Home
 import com.example.mobilecomputing.ui.login.Login
+import com.example.mobilecomputing.ui.profile.ProfileScreen
 import com.example.mobilecomputing.ui.registering.SignIn
 
 @Composable
@@ -30,6 +31,9 @@ fun ReminderApp(
         }
         composable(route = "signin"){
             SignIn(navController = appState.navController)
+        }
+        composable(route = "profile"){
+            ProfileScreen(navController = appState.navController)
         }
     }
 }

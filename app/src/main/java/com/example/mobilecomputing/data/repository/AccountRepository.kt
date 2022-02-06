@@ -12,8 +12,8 @@ class AccountRepository (
     fun accounts(): Flow<List<Account>> = accountDao.accounts()
     fun getAccountWithId(accountId: Long): Account? = accountDao.getAccountWithId(accountId)
 
-    suspend fun validateCredentials(name: String, password: String): Boolean{
-        return accountDao.validateCredentials(name, password) != null
+    suspend fun validateCredentials(name: String, password: String): Account? {
+        return accountDao.validateCredentials(name, password)
     }
 
     suspend fun addAccount(account: Account) = accountDao.insert(account)

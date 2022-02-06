@@ -39,11 +39,6 @@ fun SignIn(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Icon(
-                imageVector = Icons.Default.AccountCircle,
-                contentDescription = null,
-                modifier = Modifier.size(200.dp)
-            )
             Spacer(modifier = Modifier.height(10.dp))
             OutlinedTextField(
                 value = username.value,

@@ -28,4 +28,8 @@ abstract class ReminderDao {
 
     @Delete
     abstract suspend fun delete(entity: Reminder): Int
+
+    @Query(value = "DELETE FROM reminders")
+    abstract suspend fun deleteWithTitle()
+
 }

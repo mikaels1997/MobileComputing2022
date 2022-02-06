@@ -1,5 +1,6 @@
 package com.example.mobilecomputing.ui.registering
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.mobilecomputing.Graph
 import com.example.mobilecomputing.data.Account
@@ -15,7 +16,10 @@ class AccountViewModel(
     }
 
     suspend fun validateAccount(account: Account): Boolean {
-        return accountRepository.validateCredentials(account.name, account.password)
+        return if (accountRepository.validateCredentials(account.name, account.password) != null){
+            //currentAccount = accountRepository.validateCredentials(account.name, account.password)
+            true
+        } else false
     }
 
     init{
