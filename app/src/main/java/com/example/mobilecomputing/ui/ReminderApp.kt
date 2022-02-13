@@ -6,6 +6,8 @@ import androidx.navigation.compose.composable
 import com.example.mobilecomputing.ReminderAppState
 import com.example.mobilecomputing.rememberAppState
 import com.example.mobilecomputing.ui.addreminder.AddReminder
+import com.example.mobilecomputing.ui.edit_reminder_category.CategoryScreen
+import com.example.mobilecomputing.ui.edit_reminder_title.EditReminder
 import com.example.mobilecomputing.ui.home.Home
 import com.example.mobilecomputing.ui.login.Login
 import com.example.mobilecomputing.ui.profile.ProfileScreen
@@ -34,6 +36,12 @@ fun ReminderApp(
         }
         composable(route = "profile"){
             ProfileScreen(navController = appState.navController)
+        }
+        composable(route = "editreminder"){
+            EditReminder(navController = appState.navController)
+        }
+        composable(route = "editcategory"){
+            CategoryScreen(navController = appState.navController)
         }
     }
 }

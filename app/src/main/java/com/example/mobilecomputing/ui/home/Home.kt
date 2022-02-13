@@ -88,7 +88,8 @@ fun HomeContent(
             )
 
             Reminders(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
+                navController
             )
         }
     }

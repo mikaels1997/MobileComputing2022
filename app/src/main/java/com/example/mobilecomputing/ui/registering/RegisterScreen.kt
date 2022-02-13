@@ -71,7 +71,7 @@ fun SignIn(
                             )
                         )
                     }
-                    navController.navigate("home")
+                    navController.navigate("login")
                           },
                 enabled = true,
                 modifier = Modifier.fillMaxWidth(),

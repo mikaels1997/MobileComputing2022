@@ -1,6 +1,5 @@
-package com.example.mobilecomputing.ui.edit_reminder
+package com.example.mobilecomputing.ui.edit_reminder_title
 
-import android.content.Context
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -13,13 +12,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.mobilecomputing.data.Reminder
 import com.example.mobilecomputing.ui.home.reminderManager.ReminderViewModel
-import com.example.mobilecomputing.ui.home.reminderManager.ReminderViewState
 import com.google.accompanist.insets.systemBarsPadding
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import java.util.*
 
 @Composable
 fun EditReminder(

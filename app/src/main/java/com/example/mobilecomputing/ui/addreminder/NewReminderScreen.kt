@@ -4,6 +4,9 @@ import android.content.Context
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Money
+import androidx.compose.material.icons.filled.QuestionAnswer
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -11,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.os.bundleOf
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.mobilecomputing.data.Reminder
@@ -53,10 +57,17 @@ fun AddReminder(
                 onClick = {
                     coroutineScope.launch {
                         viewModel.saveReminder(Reminder(
-                            title=title.value,
-                            date = Date().time
+                            message=title.value,
+                            date = Date().time,
+                            location_x = 0,
+                            location_y = 0,
+                            reminder_time = 0,
+                            creation_time = 0,
+                            reminder_seen = false,
+                            category = "-"
                             )
                         )
+
                     }
                     navController.navigate("home")
                 },

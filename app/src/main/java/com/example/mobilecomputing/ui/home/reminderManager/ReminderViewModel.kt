@@ -1,5 +1,6 @@
 package com.example.mobilecomputing.ui.home.reminderManager
 
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -17,6 +18,12 @@ class ReminderViewModel(
 ) : ViewModel() {
     private val _state = MutableStateFlow(ReminderViewState())
 
+    companion object {
+        private var selected: Long = 0
+        fun getSelectedReminder():Long { return selected }
+        fun setSelectedReminder(id: Long) { selected = id}
+    }
+
     val state: StateFlow<ReminderViewState>
         get() = _state
 
@@ -26,6 +33,18 @@ class ReminderViewModel(
 
     suspend fun deleteReminder(){
         reminderRepository.deleteReminder()
+    }
+
+    suspend fun deleteReminderById(id: Long){
+        reminderRepository.deleteById(id)
+    }
+
+    suspend fun editReminder(id: Long, title: String){
+        reminderRepository.editReminder(id, title)
+    }
+
+    suspend fun editCategory(id: Long, category: String){
+        reminderRepository.editCategory(id, category)
     }
 
     init{

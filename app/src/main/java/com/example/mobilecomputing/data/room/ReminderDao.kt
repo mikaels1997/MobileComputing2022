@@ -1,5 +1,6 @@
 package com.example.mobilecomputing.data.room
 
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.room.*
 import com.example.mobilecomputing.data.Reminder
 import kotlinx.coroutines.flow.Flow
@@ -8,10 +9,10 @@ import java.util.*
 @Dao
 abstract class ReminderDao {
 
-    @Query(value = "SELECT * FROM reminders WHERE title = :name")
+    @Query(value = "SELECT * FROM reminders WHERE message = :name")
     abstract suspend fun getReminderWithName(name: String): Reminder?
 
-    @Query("SELECT * FROM reminders WHERE id = :reminderId")
+    @Query("SELECT * FROM reminders WHERE creator_id = :reminderId")
     abstract fun getReminderWithId(reminderId: Long): Reminder?
 
     @Query("SELECT * FROM reminders LIMIT 15")
@@ -26,10 +27,19 @@ abstract class ReminderDao {
     @Update(onConflict =  OnConflictStrategy.REPLACE)
     abstract suspend fun update(entity: Reminder)
 
+    @Query(value = "UPDATE reminders SET category = :category WHERE creator_id = :id")
+    abstract suspend fun editCategory(id: Long, category: String)
+
     @Delete
     abstract suspend fun delete(entity: Reminder): Int
 
+    @Query(value = "DELETE FROM reminders WHERE creator_id = :id")
+    abstract suspend fun deleteById(id: Long)
+
     @Query(value = "DELETE FROM reminders")
     abstract suspend fun deleteWithTitle()
+
+    @Query(value = "UPDATE reminders SET message = :title WHERE creator_id = :id")
+    abstract suspend fun editById(id: Long, title: String)
 
 }
