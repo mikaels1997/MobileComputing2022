@@ -35,6 +35,7 @@ import androidx.navigation.NavController
 import com.example.mobilecomputing.data.Reminder
 import com.example.mobilecomputing.util.viewModelProviderFactoryOf
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -60,19 +61,31 @@ private fun ReminderList(
     viewModel: ReminderViewModel,
     navController: NavController
 ) {
+    UpdateSeenReminders(viewModel)
     LazyColumn(
         contentPadding = PaddingValues(0.dp),
         verticalArrangement = Arrangement.Center
     ) {
         items(list){ item ->
-            ReminderListItem(
-                reminder = item,
-                onClick = {},
-                modifier = Modifier.fillParentMaxWidth(),
-                item.creator_id,
-                viewModel,
-                navController
-            )
+            if (item.reminder_seen){
+                ReminderListItem(
+                    reminder = item,
+                    onClick = {},
+                    modifier = Modifier.fillParentMaxWidth(),
+                    item.creator_id,
+                    viewModel,
+                    navController
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun UpdateSeenReminders(viewModel: ReminderViewModel){
+    runBlocking{
+        for (reminder in ReminderViewModel.getSeenReminders()){
+            viewModel.markAsSeen(reminder.message)
         }
     }
 }
@@ -117,7 +130,7 @@ private fun ReminderListItem(
 
         // date
         Text(
-            text = reminder.date.toDateString(),
+            text = reminder.creation_time.toDateString(),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             style = MaterialTheme.typography.caption,

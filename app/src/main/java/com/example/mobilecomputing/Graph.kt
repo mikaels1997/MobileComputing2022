@@ -13,6 +13,8 @@ object Graph {
     lateinit var accountDatabase: AccountDatabase
         private set
 
+    lateinit var appContext: Context
+
     val reminderRepository by lazy{
         ReminderRepository(
             reminderDao = reminderDatabase.reminderDao()
@@ -26,6 +28,7 @@ object Graph {
     }
 
     fun provide(context: Context) {
+        appContext = context
         reminderDatabase = Room.databaseBuilder(context, ReminderDatabase::class.java, "data.db")
             .fallbackToDestructiveMigration()
             .build()

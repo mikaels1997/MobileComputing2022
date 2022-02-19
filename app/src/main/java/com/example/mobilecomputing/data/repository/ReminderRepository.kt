@@ -20,4 +20,6 @@ class ReminderRepository(
     suspend fun deleteById(id: Long) = reminderDao.deleteById(id)
 
     suspend fun editCategory(id: Long, category: String) = reminderDao.editCategory(id, category)
+
+    suspend fun markAsSeen(message: String, seen: Boolean) = reminderDao.markAsSeen(message, seen)
 }

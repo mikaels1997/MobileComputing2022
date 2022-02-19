@@ -42,4 +42,7 @@ abstract class ReminderDao {
     @Query(value = "UPDATE reminders SET message = :title WHERE creator_id = :id")
     abstract suspend fun editById(id: Long, title: String)
 
+    @Query(value = "UPDATE reminders SET reminder_seen = :seen WHERE message = :message ")
+    abstract suspend fun markAsSeen(message: String, seen: Boolean)
+
 }

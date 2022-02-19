@@ -48,7 +48,7 @@ fun CategoryScreen(
                 }
             )
 
-            //Schoool
+            //School
             IconButton(
                 onClick = {
                     coroutineScope.launch {
