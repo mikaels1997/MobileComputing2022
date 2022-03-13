@@ -5,6 +5,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Map
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -14,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.mobilecomputing.R
+import com.example.mobilecomputing.services.LocationService
 import com.example.mobilecomputing.ui.home.reminderManager.Reminders
 import com.google.accompanist.insets.systemBarsPadding
 
@@ -46,7 +48,7 @@ private fun HomeAppBar(
         },
         backgroundColor = backgroundColor,
         actions = {
-            IconButton( onClick = {}){
+            IconButton( onClick = {navController.navigate("searchreminders")}){
                 Icon(imageVector = Icons.Filled.Search, contentDescription = "Search")
             }
             IconButton( onClick = { navController.navigate("profile")}){

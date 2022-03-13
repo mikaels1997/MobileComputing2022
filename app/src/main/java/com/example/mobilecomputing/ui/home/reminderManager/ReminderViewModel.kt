@@ -15,6 +15,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.work.*
 import com.example.mobilecomputing.Graph
+import com.example.mobilecomputing.Graph.reminderRepository
 import com.example.mobilecomputing.data.Reminder
 import com.example.mobilecomputing.data.repository.ReminderRepository
 import com.example.mobilecomputing.util.NotificationWorker
@@ -24,6 +25,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.random.Random.Default.nextInt
@@ -40,15 +42,20 @@ class ReminderViewModel(
         private var seenReminders: MutableList<Reminder> = mutableListOf()
         fun getSeenReminders(): List<Reminder> { return seenReminders}
         fun addSeenReminder(reminder: Reminder) { seenReminders.add(reminder)}
+        fun instantNotification(reminder: Reminder) {
+            setInstantNotification(reminder)
+        }
     }
 
     val state: StateFlow<ReminderViewState>
         get() = _state
 
     suspend fun saveReminder(reminder: Reminder): Long {
-        setOneTimeNotification(reminder, this, false)
+        if (reminder.reminder_time > reminder.creation_time) {
+            setOneTimeNotification(reminder, false)
+        }
         if (reminder.first_notification - reminder.reminder_time < "-1".toLong()){
-            setOneTimeNotification(reminder, this, true)
+            setOneTimeNotification(reminder, true)
         }
         return reminderRepository.addReminder(reminder)
     }
@@ -86,7 +93,7 @@ class ReminderViewModel(
     }
 }
 
-private fun setOneTimeNotification(reminder: Reminder, viewModel: ReminderViewModel, first: Boolean) {
+private fun setOneTimeNotification(reminder: Reminder, first: Boolean) {
     val workManager = WorkManager.getInstance(Graph.appContext)
     val constraints = Constraints.Builder()
         .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -114,6 +121,28 @@ private fun setOneTimeNotification(reminder: Reminder, viewModel: ReminderViewMo
                 //createErrorNotification()
             }
         }
+}
+
+private fun setInstantNotification(reminder: Reminder){
+    val workManager = WorkManager.getInstance(Graph.appContext)
+    val constraints = Constraints.Builder()
+        .setRequiredNetworkType(NetworkType.CONNECTED)
+        .build()
+    var notificationMessage = "Reminder message: ${reminder.message}"
+    var title = "New reminder!"
+
+    val notificationWorker = OneTimeWorkRequestBuilder<NotificationWorker>()
+        .setConstraints(constraints)
+        .build()
+    workManager.enqueue(notificationWorker)
+
+    // Monitoring for state of work (maybe not needed)
+    if (!reminder.reminder_seen){
+        createReminderNotification(reminder, notificationMessage, title)
+        runBlocking {
+            reminderRepository.markAsSeen(reminder.message, true)
+        }
+    }
 }
 
 private fun createNotificationChannel(context: Context) {

@@ -12,6 +12,8 @@ import com.example.mobilecomputing.ui.home.Home
 import com.example.mobilecomputing.ui.login.Login
 import com.example.mobilecomputing.ui.profile.ProfileScreen
 import com.example.mobilecomputing.ui.registering.SignIn
+import com.example.mobilecomputing.ui.maps.ReminderLocationMap
+import com.example.mobilecomputing.ui.maps.SearchRemindersMap
 
 @Composable
 fun ReminderApp(
@@ -42,6 +44,12 @@ fun ReminderApp(
         }
         composable(route = "editcategory"){
             CategoryScreen(navController = appState.navController)
+        }
+        composable(route="maps"){
+            ReminderLocationMap(navController = appState.navController)
+        }
+        composable(route="searchreminders"){
+            SearchRemindersMap(navController = appState.navController)
         }
     }
 }

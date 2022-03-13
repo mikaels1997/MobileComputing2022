@@ -15,8 +15,11 @@ abstract class ReminderDao {
     @Query("SELECT * FROM reminders WHERE creator_id = :reminderId")
     abstract fun getReminderWithId(reminderId: Long): Reminder?
 
-    @Query("SELECT * FROM reminders LIMIT 15")
+    @Query("SELECT * FROM reminders")
     abstract fun reminders(): Flow<List<Reminder>>
+
+    @Query("SELECT * FROM reminders")
+    abstract fun reminderList(): List<Reminder>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun insert(entity: Reminder) : Long
