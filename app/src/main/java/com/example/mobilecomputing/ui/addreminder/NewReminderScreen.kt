@@ -21,6 +21,7 @@ import com.example.mobilecomputing.data.Reminder
 import com.example.mobilecomputing.ui.home.reminderManager.ReminderViewModel
 import com.example.mobilecomputing.ui.home.reminderManager.ReminderViewState
 import com.google.accompanist.insets.systemBarsPadding
+import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.NonDisposableHandle.parent
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
@@ -37,6 +38,12 @@ fun AddReminder(
     val notificationDelay = rememberSaveable { mutableStateOf("") }
     val firstNotificationBefore = rememberSaveable { mutableStateOf("0")}
     val notificationEnabled = remember{ mutableStateOf(false)}
+
+    val latlng = navController
+        .currentBackStackEntry
+        ?.savedStateHandle
+        ?.getLiveData<LatLng>("location_data")
+        ?.value
     Surface() {
 
         Column (            modifier = Modifier
@@ -90,21 +97,48 @@ fun AddReminder(
                     )
                 )
             }
+
+            // Reminder location button
+            Spacer(modifier = Modifier.height(30.dp))
+            if (latlng == null){
+                Button(
+                    onClick = {
+                        navController.navigate("maps")
+                    },
+                    modifier = Modifier
+                        .size(55.dp),
+                    enabled = true,
+                    shape = MaterialTheme.shapes.small,
+
+                    ) {
+                    Text(text = "L")
+                }
+            } else {
+                Text(text = "Lat: ${latlng.latitude}, \nLng: ${latlng.longitude}")
+            }
+
+            // Reminder save button
             Spacer(modifier = Modifier.height(30.dp))
             Button(
                 onClick = {
+                    var delay: Long
+                    delay = if(notificationDelay.value == "") {
+                        (-1).toLong()
+                    } else {
+                        notificationDelay.value.toLong()
+                    }
                     coroutineScope.launch {
                         viewModel.saveReminder(Reminder(
                             message=title.value,
-                            location_x = 0,
-                            location_y = 0,
-                            reminder_time = Date().time + notificationDelay.value.toLong(),
+                            location_x = latlng?.longitude ?: 0.toDouble(),
+                            location_y = latlng?.latitude ?: 0.toDouble(),
+                            reminder_time = Date().time + delay,
                             creation_time = Date().time,
                             reminder_seen = false,
                             category = "-",
                             notification_enabled = notificationEnabled.value,
                             first_notification = Date().time +
-                                    notificationDelay.value.toLong() -
+                                    delay -
                                     firstNotificationBefore.value.toLong()
                             )
                         )
